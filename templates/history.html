@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Mood Tracker — My Quotes{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>📜 My Quotes</h1>
+  <p class="hero-sub">All your special quotes from the past!</p>
+</section>
+
+{% if entries %}
+<ul class="history-list">
+  {% for entry in entries %}
+  <li class="history-card" data-mood="{{ entry.mood }}">
+    <div class="history-card-header">
+      <span class="history-emojis">{{ entry.mood_emoji }} {{ entry.activity_emoji }}</span>
+      <time class="history-time" datetime="{{ entry.created_at }}">{{ entry.created_at }}</time>
+    </div>
+    <p class="history-message">{{ entry.message }}</p>
+    <blockquote class="history-quote">"{{ entry.quote }}"</blockquote>
+    <div class="history-tags">
+      <span class="tag">{{ entry.mood | capitalize }}</span>
+      <span class="tag">{{ entry.activity | capitalize }}</span>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+  <span class="empty-emoji">🌟</span>
+  <h2>No quotes yet!</h2>
+  <p>Go to Home and create your first special quote.</p>
+  <a href="{{ url_for('index') }}" class="btn-submit">Let's Go! 🚀</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

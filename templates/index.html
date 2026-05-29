@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Mood Tracker — Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>How are you feeling today?</h1>
+  <p class="hero-sub">Pick your mood, what you're doing, and tell us about it!</p>
+</section>
+
+<form id="mood-form" class="mood-form" novalidate>
+  <fieldset class="picker-section">
+    <legend>😊 Your Mood</legend>
+    <div class="picker-grid" role="radiogroup" aria-label="Select your mood">
+      {% for key, mood in moods.items() %}
+      <label class="picker-card">
+        <input type="radio" name="mood" value="{{ key }}" required>
+        <span class="picker-emoji">{{ mood.emoji }}</span>
+        <span class="picker-label">{{ mood.label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <fieldset class="picker-section">
+    <legend>🎯 What are you doing?</legend>
+    <div class="picker-grid" role="radiogroup" aria-label="Select your activity">
+      {% for key, activity in activities.items() %}
+      <label class="picker-card">
+        <input type="radio" name="activity" value="{{ key }}" required>
+        <span class="picker-emoji">{{ activity.emoji }}</span>
+        <span class="picker-label">{{ activity.label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <div class="message-section">
+    <label for="message">✏️ Tell us more!</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="4"
+      maxlength="500"
+      placeholder="What happened? How do you feel about it?"
+      required
+    ></textarea>
+    <span class="char-count"><span id="char-current">0</span> / 500</span>
+  </div>
+
+  <p id="form-error" class="form-error" hidden></p>
+
+  <button type="submit" class="btn-submit" id="submit-btn">
+    <span class="btn-text">✨ Get My Quote!</span>
+    <span class="btn-loading" hidden>Creating magic...</span>
+  </button>
+</form>
+
+<div id="quote-modal" class="modal" hidden aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-content" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div class="modal-emoji" id="modal-emoji">😊</div>
+    <h2 id="modal-title">Your Special Quote</h2>
+    <blockquote id="modal-quote" class="modal-quote"></blockquote>
+    <button type="button" class="btn-close" data-close-modal>Awesome! 🎉</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
